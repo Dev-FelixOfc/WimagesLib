@@ -4,15 +4,15 @@ import { fileURLToPath, pathToFileURL } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const dbPath = join(__dirname, './src/db');
-const imgPath = join(__dirname, './img');
 
 export const getAnimeImage = async (name) => {
     const allData = await getAllData();
-    const result = allData.filter(d => 
-        (d.name && d.name.toLowerCase().includes(name.toLowerCase())) || 
-        (d.anime && d.anime.toLowerCase().includes(name.toLowerCase()))
-    );
-    return result; 
+    const query = name.toLowerCase();
+    
+    return allData.filter(d => 
+        (d.name && d.name.toLowerCase().includes(query)) || 
+        (d.source && d.source.toLowerCase().includes(query))
+    ); 
 };
 
 export const getAllData = async () => {
@@ -22,9 +22,12 @@ export const getAllData = async () => {
     return Promise.all(files.map(async (f) => {
         const filePath = pathToFileURL(join(dbPath, f)).href;
         const { default: data } = await import(filePath);
+
+        const baseUrl = 'https://raw.githubusercontent.com/Dev-FelixOfc/WimagesLib/main/img/';
+        
         return {
             ...data,
-            imageUrl: data.imageUrl || `https://raw.githubusercontent.com/Dev-FelixOfc/wimages-lib/main/img/${data.file}`
+            imageUrl: data.imageUrl || `${baseUrl}${data.file}`
         };
     }));
 };
