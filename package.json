@@ -1,0 +1,9 @@
+{
+  "name": "wimages-lib",
+  "version": "1.0.0",
+  "description": "Librería de imágenes de waifus para comandos por ejemplo de gacha.",
+  "main": "index.js",
+  "type": "module",
+  "author": "Dev-FelixOfc",
+  "license": "MIT"
+}
